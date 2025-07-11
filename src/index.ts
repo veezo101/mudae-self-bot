@@ -18,9 +18,9 @@ client.on('ready', async () => {
 })
 
 client.on("messageCreate", (message) => {
-  if (message.channel.id !== "1390420546071691334") return;
+  if (message.channel.id !== config.channelId) return;
   if (message.content === "test") {
-    message.reply("dumass");
+    message.channel.send("$tu");
   }
 });
 
