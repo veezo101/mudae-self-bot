@@ -1,0 +1,14 @@
+{
+    "presets" : [
+        {
+            "name": "YOUR_SERVER_REFERENCE_NAME_HERE",
+            "isEnabled": true,
+            "channelId": "YOUR_CHANNEL_ID_HERE"
+        },
+        {
+            "name": "ANOTHER_SERVER_REFERENCE_NAME_HERE",
+            "isEnabled": false,
+            "channelId": "ANOTHER_CHANNEL_ID_HERE"
+        }
+    ]
+}
