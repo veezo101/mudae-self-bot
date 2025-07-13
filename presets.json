@@ -3,12 +3,14 @@
         {
             "name": "YOUR_SERVER_REFERENCE_NAME_HERE",
             "isEnabled": true,
-            "channelId": "YOUR_CHANNEL_ID_HERE"
+            "channelId": "YOUR_CHANNEL_ID_HERE",
+            "wishedCharacters": ["Rin Shima", "Ikuyo Kita"]
         },
         {
             "name": "ANOTHER_SERVER_REFERENCE_NAME_HERE",
             "isEnabled": false,
-            "channelId": "ANOTHER_CHANNEL_ID_HERE"
+            "channelId": "ANOTHER_CHANNEL_ID_HERE",
+            "wishedCharacters": []
         }
     ]
 }
