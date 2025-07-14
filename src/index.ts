@@ -193,6 +193,7 @@ client.on("messageCreate", async (message) => {
     if (!matchedPreset.wishedCharacters.includes(characterName)) {
       console.log(`[${[matchedPreset.name]}] Married ${characterName}, not in wished list, divorcing...`);
       await message.channel.send(`$divorce ${characterName}`);
+      await Services.sleepRandomAsync();
     }
   }
 
