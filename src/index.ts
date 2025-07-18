@@ -32,6 +32,8 @@ const ANOTHER_CLAIM_IDENTIFER = /another \*\*(\d+)?h?\s*(\d+)\*\* min/i;
 const KAKERA_VALUE_MATCH_IDENTIFIER = /\*\*([\d,]+)\*\*<:kakera:/i;
 const MARRIED_IDENTIFIER = /and \*\*(.+?)\*\* are now married!/i;
 const DIVORCE_CONFIRMATION_IDENTIFIER = /(.*?): Do you confirm the divorce\? \(y\/n\/yes\/no\)/i;
+const WISHED_BY_IDENTIFIER = /Wished by/i;
+
 
 //start bot
 Services.showBanner();
@@ -129,13 +131,28 @@ client.on("messageCreate", async (message) => {
     for (const rollMsg of rolls) {
       console.log(`[${matchedPreset.name}] Processing stored roll for character: ${rollMsg.embeds[0].author?.name}`);
       for (const wishedChar of matchedPreset.wishedCharacters || []) {
-        if (rollMsg.embeds[0].author && rollMsg.embeds[0].author.name.includes(wishedChar)) {
+        let wishedBySomeoneMatch = content.match(WISHED_BY_IDENTIFIER);
+        if (rollMsg.embeds[0].author && rollMsg.embeds[0].author.name.includes(wishedChar) || wishedBySomeoneMatch) {
           console.log(`[${matchedPreset.name}] Matched wished character: ${wishedChar}`);
           await rollMsg.react(CLAIM_EMOJIS[Math.floor(Math.random() * CLAIM_EMOJIS.length)]);
           await Services.sleepRandomAsync();
           await rollMsg.clickButton();
           await Services.sleepRandomAsync();
           claimUsed = true;
+
+          if (wishedBySomeoneMatch) {
+            // Notify users who wished for the character
+            rollMsg.mentions?.users?.forEach(async user => {
+              if (user.id === client.user?.id) return;
+              try {
+                await user.send(`🎉 The character **${rollMsg.embeds[0].author}** you wished for has been claimed by me!`);
+                await Services.sleepRandomAsync();
+                console.log(`[${matchedPreset.name}] Sent DM to ${user.tag} for claiming ${rollMsg.embeds[0].author}`);
+              } catch (err) {
+                console.error(`❌[${matchedPreset.name}] Failed to DM ${user.tag}:`, err);
+              }
+            });
+          }
           break;
         }
       }
