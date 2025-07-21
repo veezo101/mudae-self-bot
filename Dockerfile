@@ -10,6 +10,9 @@ RUN npm install
 # Copy app source
 COPY . .
 
+# Build the app
+RUN npm run build
+
 # Add crontab file
 RUN echo "55 * * * * cd /app && npm start >> /var/log/cron.log 2>&1" > /etc/crontabs/root
 
