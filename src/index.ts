@@ -224,3 +224,6 @@ client.on("messageCreate", async (message) => {
 });
 
 client.login(config.token);
+setTimeout(() => {
+    process.exit(0);
+}, 300000);
