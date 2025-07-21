@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: waifu_bot # you can change this
+    restart: unless-stopped
