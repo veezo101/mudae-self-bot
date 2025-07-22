@@ -225,5 +225,8 @@ client.on("messageCreate", async (message) => {
 
 client.login(config.token);
 setTimeout(() => {
+  console.log("Bot has been running for 5 minutes, exiting...");
+  client.destroy();
+  console.log("Bot destroyed, exiting process.");
     process.exit(0);
 }, 300000);
