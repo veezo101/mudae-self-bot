@@ -14,7 +14,7 @@ COPY . .
 RUN npm run build
 
 # Add crontab file
-RUN echo "55 * * * * cd /app && npm start >> /var/log/cron.log 2>&1" > /etc/crontabs/root
+RUN echo "45 * * * * cd /usr/src/app && /usr/local/bin/npm start >> /var/log/cron.log 2>&1" > /etc/crontabs/root
 
 # Create log file
 RUN touch /var/log/cron.log
