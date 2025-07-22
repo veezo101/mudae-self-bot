@@ -14,10 +14,10 @@ COPY . .
 RUN npm run build
 
 # Add crontab file
-RUN echo "45 * * * * cd /usr/src/app && /usr/local/bin/npm start >> /var/log/cron.log 2>&1" > /etc/crontabs/root
+RUN echo "55 * * * * cd /usr/src/app && npm start" > /etc/crontabs/root
 
 # Create log file
 RUN touch /var/log/cron.log
 
 # Start cron and keep container running
-CMD crond -f -l 8
+CMD crond -f -l 5 -d 8
