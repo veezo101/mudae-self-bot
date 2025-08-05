@@ -51,9 +51,9 @@ client.on('ready', async () => {
     console.log(`[${preset.name}] Performing dailies`);
 
     const channel = await client.channels.fetch(preset.channelId) as TextChannel;
-    // await channel.send("$dk");
+    await channel.send("$dk");
     await Services.sleepRandomAsync();
-    //await channel.send("$daily");
+    await channel.send("$daily");
     await Services.sleepRandomAsync();
 
     console.log(`[${preset.name}] Performing $tu`)
