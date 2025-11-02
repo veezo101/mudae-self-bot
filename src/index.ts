@@ -5,6 +5,9 @@ import { CharacterRollStore } from "./CharacterRollStore";
 //initialize roll store
 const characterRollStore = new CharacterRollStore();
 
+//Flag to track if claim was wishes char
+const IsChannelClaimedWishedChar: Record<string, boolean> = {};
+
 // Track next claim times by channelId
 const claimTimers: Record<string, { hours: number, minutes: number }> = {};
 
@@ -131,7 +134,7 @@ client.on("messageCreate", async (message) => {
     for (const rollMsg of rolls) {
       console.log(`[${matchedPreset.name}] Processing stored roll for character: ${rollMsg.embeds[0].author?.name}`);
       for (const wishedChar of matchedPreset.wishedCharacters || []) {
-        let wishedBySomeoneMatch = content.match(WISHED_BY_IDENTIFIER);
+        let wishedBySomeoneMatch = rollMsg.content.match(WISHED_BY_IDENTIFIER);
         if (rollMsg.embeds[0].author && rollMsg.embeds[0].author.name.includes(wishedChar) || wishedBySomeoneMatch) {
           console.log(`[${matchedPreset.name}] Matched wished character: ${wishedChar}`);
           await rollMsg.react(CLAIM_EMOJIS[Math.floor(Math.random() * CLAIM_EMOJIS.length)]);
@@ -139,6 +142,7 @@ client.on("messageCreate", async (message) => {
           await rollMsg.clickButton();
           await Services.sleepRandomAsync();
           claimUsed = true;
+          IsChannelClaimedWishedChar[message.channel.id] = true;
 
           if (wishedBySomeoneMatch) {
             // Notify users who wished for the character
@@ -207,7 +211,7 @@ client.on("messageCreate", async (message) => {
     const characterName = marriageMatch[1].trim();
 
     // If character is not wished, divorce immediately
-    if (!matchedPreset.wishedCharacters.includes(characterName)) {
+    if (!matchedPreset.wishedCharacters.includes(characterName) || IsChannelClaimedWishedChar[message.channel.id] !== true) {
       console.log(`[${[matchedPreset.name]}] Married ${characterName}, not in wished list, divorcing...`);
       await message.channel.send(`$divorce ${characterName}`);
       await Services.sleepRandomAsync();
